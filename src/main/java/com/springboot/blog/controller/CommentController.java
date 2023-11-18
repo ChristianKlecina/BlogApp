@@ -3,6 +3,7 @@ package com.springboot.blog.controller;
 import com.springboot.blog.dto.CommentDto;
 import com.springboot.blog.exception.ResourceNotFoundException;
 import com.springboot.blog.service.CommentService;
+import jakarta.validation.Valid;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class CommentController {
     }
 
     @PostMapping("/posts/{postId}/comments")
-    public ResponseEntity<CommentDto> createComment(@PathVariable long postId, @RequestBody CommentDto commentDto) throws ResourceNotFoundException {
+    public ResponseEntity<CommentDto> createComment(@PathVariable long postId, @Valid @RequestBody CommentDto commentDto) throws ResourceNotFoundException {
         return new ResponseEntity<>(commentService.createComment(postId, commentDto), HttpStatus.CREATED);
     }
 
@@ -38,7 +39,7 @@ public class CommentController {
 
     @PutMapping("posts/{postId}/comments/{commentId}")
     public ResponseEntity<CommentDto> updateComment(@PathVariable Long postId, @PathVariable Long commentId,
-                                                    @RequestBody CommentDto commentDto) throws ResourceNotFoundException{
+                                                    @Valid @RequestBody CommentDto commentDto) throws ResourceNotFoundException{
         CommentDto updatedComment = commentService.updateComment(postId, commentId, commentDto);
         return new ResponseEntity<>(updatedComment, HttpStatus.OK);
     }
